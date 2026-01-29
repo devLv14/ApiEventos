@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ApiEventos/ApiEventos.csproj" />
+  <Project Path="CodeFirst/CodeFirst.csproj" />
+</Solution>
