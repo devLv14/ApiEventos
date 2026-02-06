@@ -43,7 +43,6 @@ namespace ApiEventos.Controllers
         }
 
         // PUT: api/Musicas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMusica(int id, Musica musica)
         {
@@ -74,7 +73,6 @@ namespace ApiEventos.Controllers
         }
 
         // POST: api/Musicas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Musica>> PostMusica(Musica musica)
         {
@@ -98,6 +96,24 @@ namespace ApiEventos.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Musicas/search?term=dj
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Musica>>> SearchMusicas([FromQuery] string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return await _context.Musicas.ToListAsync();
+            }
+
+            var musicas = await _context.Musicas
+                .Where(m => m.Nombre.Contains(term) ||
+                           m.Tipo.Contains(term) ||
+                           m.GeneroMusical.Contains(term))
+                .ToListAsync();
+
+            return musicas;
         }
 
         private bool MusicaExists(int id)

@@ -37,8 +37,8 @@ namespace CodeFirst.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("DuracionHoras")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("DuracionHoras")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IncluyePersonajes")
                         .HasColumnType("bit");
@@ -51,8 +51,8 @@ namespace CodeFirst.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioPorEvento")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PrecioPorEvento")
+                        .HasColumnType("int");
 
                     b.Property<string>("PublicoObjetivo")
                         .IsRequired()
@@ -90,8 +90,8 @@ namespace CodeFirst.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioPorEvento")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PrecioPorEvento")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
@@ -100,6 +100,158 @@ namespace CodeFirst.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Decoraciones");
+                });
+
+            modelBuilder.Entity("CodeFirst.Models.DetalleManteleriaEvento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrecioUnitario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicioManteleriaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubTotal")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventoId");
+
+                    b.ToTable("DetallesManteleriaEvento");
+                });
+
+            modelBuilder.Entity("CodeFirst.Models.Evento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AnimacionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Anticipo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClienteEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClienteNombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClienteTelefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CostoTotal")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DecoracionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaEvento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MusicaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumeroInvitados")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SaldoPendiente")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Eventos");
+                });
+
+            modelBuilder.Entity("CodeFirst.Models.Manteleria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Disponible")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Medidas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PrecioAlquiler")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PrecioVenta")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockDisponible")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mantelerias");
                 });
 
             modelBuilder.Entity("CodeFirst.Models.Musica", b =>
@@ -149,12 +301,10 @@ namespace CodeFirst.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Disponible")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Disponible")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -164,7 +314,6 @@ namespace CodeFirst.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ServiciosIncluidos")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoEvento")
@@ -180,64 +329,18 @@ namespace CodeFirst.Migrations
                     b.ToTable("Salones");
                 });
 
-            modelBuilder.Entity("CodeFirst.Models.ServicioManteleria", b =>
+            modelBuilder.Entity("CodeFirst.Models.DetalleManteleriaEvento", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("CodeFirst.Models.Evento", null)
+                        .WithMany("DetallesManteleria")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Disponible")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImagenUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Medidas")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PrecioAlquiler")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("PrecioVenta")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("StockDisponible")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiciosManteleria");
+            modelBuilder.Entity("CodeFirst.Models.Evento", b =>
+                {
+                    b.Navigation("DetallesManteleria");
                 });
 #pragma warning restore 612, 618
         }

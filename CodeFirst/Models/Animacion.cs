@@ -11,34 +11,29 @@ namespace CodeFirst.Models
     {
         public int? Id { get; set; }
 
-       
+        [Required]
         public string Nombre { get; set; }
 
-  
-        public string Tipo { get; set; }
+        [Required]
+        public string Tipo { get; set; } = string.Empty;
 
-        
-        public decimal DuracionHoras { get; set; }
+        [Required]
+        public int DuracionHoras { get; set; }
 
-        
-        public decimal PrecioPorEvento { get; set; }
+        [Required]
+        public int PrecioPorEvento { get; set; }
 
-        
-        public string PublicoObjetivo { get; set; }
+        [Required]
+        public string PublicoObjetivo { get; set; } = string.Empty;
 
-     
-        public bool IncluyePersonajes { get; set; }
+        public bool IncluyePersonajes { get; set; } = true;
 
-    
-        public string NivelEnergia { get; set; }
+        [Required]
+        public string NivelEnergia { get; set; } = string.Empty;
 
-       
-        public string Descripcion { get; set; }
+        [Required]
+        public string Descripcion { get; set; } 
 
-     
-        public bool Disponible { get; set; }
-
-        // Propiedad de navegación para eventos
-        //public virtual ICollection<Evento> Eventos { get; set; }
+        public bool Disponible { get; set; } = true;
     }
 }

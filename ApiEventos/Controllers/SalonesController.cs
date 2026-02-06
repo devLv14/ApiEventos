@@ -12,23 +12,23 @@ namespace ApiEventos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalonsController : ControllerBase
+    public class SalonesController : ControllerBase
     {
         private readonly ManteleriaDbContext _context;
 
-        public SalonsController(ManteleriaDbContext context)
+        public SalonesController(ManteleriaDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Salons
+        // GET: api/Salones
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Salon>>> GetSalones()
         {
             return await _context.Salones.ToListAsync();
         }
 
-        // GET: api/Salons/5
+        // GET: api/Salones/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Salon>> GetSalon(int id)
         {
@@ -42,8 +42,7 @@ namespace ApiEventos.Controllers
             return salon;
         }
 
-        // PUT: api/Salons/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Salones/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSalon(int id, Salon salon)
         {
@@ -73,8 +72,7 @@ namespace ApiEventos.Controllers
             return NoContent();
         }
 
-        // POST: api/Salons
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Salones
         [HttpPost]
         public async Task<ActionResult<Salon>> PostSalon(Salon salon)
         {
@@ -84,7 +82,7 @@ namespace ApiEventos.Controllers
             return CreatedAtAction("GetSalon", new { id = salon.Id }, salon);
         }
 
-        // DELETE: api/Salons/5
+        // DELETE: api/Salones/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalon(int id)
         {
@@ -98,6 +96,25 @@ namespace ApiEventos.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Salones/search?term=bodas
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Salon>>> SearchSalones([FromQuery] string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return await _context.Salones.ToListAsync();
+            }
+
+            var salones = await _context.Salones
+                .Where(s => s.Nombre.Contains(term) ||
+                           s.Descripcion != null && s.Descripcion.Contains(term) ||
+                           s.Ubicacion.Contains(term) ||
+                           s.TipoEvento.Contains(term))
+                .ToListAsync();
+
+            return salones;
         }
 
         private bool SalonExists(int id)

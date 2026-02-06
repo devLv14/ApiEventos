@@ -9,28 +9,25 @@ namespace CodeFirst.Models
 {
     public class Decoracion
     {
-       
         public int Id { get; set; }
 
-       
-        public string Nombre { get; set; }
+        [Required]
+        public string Nombre { get; set; } = string.Empty;
+
+        [Required]
+        public string Tipo { get; set; } = string.Empty;
+
+        [Required]
+        public int PrecioPorEvento { get; set; }
+
+        [Required]
+        public string EmpresaProveedor { get; set; } = string.Empty;
+
+        [Required]
+        public string Descripcion { get; set; } = string.Empty;
+
+        public bool Disponible { get; set; } = true;
 
        
-        public string Tipo { get; set; }
-
-       
-        public decimal PrecioPorEvento { get; set; }
-
-       
-        public string EmpresaProveedor { get; set; }
-
-      
-        public string Descripcion { get; set; }
-
-      
-        public bool Disponible { get; set; }
-
-        // Propiedad de navegación para eventos
-        //public virtual ICollection<Evento> Eventos { get; set; }
     }
 }

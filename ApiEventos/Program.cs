@@ -1,41 +1,58 @@
+ï»¿using ApiEventos.Models;
+using CodeFirst.Contexts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add services
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// Configuración de la conexión a la base de datos
-builder.Services.AddDbContext<DbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Configuración de CORS
+
+// Configurar CORS para Angular
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        builder => builder.AllowAnyOrigin() //builder.WithOrigins("http://localhost:4200") // URL de tu proyecto Angular
-            .AllowAnyMethod()// Permite cualquier método HTTP (GET, POST, etc.)
-            .AllowAnyHeader());// Permite cualquier encabezado
+        builder => builder
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
+// Configurar SQL Server LocalDB
+builder.Services.AddDbContext<ManteleriaDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//"Server=DESKTOP-JILFV61;Database=catalogoeventos;User ID=sa;Password=modernoSAO;Trusted_Connection=False;MultipleActiveResultSets=True;TrustServerCertificate=True;"
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
-
 }
-//aplica la política de cors, , antes de UseAuthorization
+
+app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
-
 app.UseAuthorization();
-
 app.MapControllers();
+
+/* Crear base de datos si no existe
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ManteleriaDbContext>();
+    dbContext.Database.EnsureCreated();
+}*/
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ManteleriaDbContext>();
+        dbContext.Database.EnsureCreated();
+    }
+}
 
 app.Run();

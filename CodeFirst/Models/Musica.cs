@@ -11,24 +11,21 @@ namespace CodeFirst.Models
     {
         public int? Id { get; set; }
 
-   
-        public string Nombre { get; set; }
+        [Required]
+        public string Nombre { get; set; } = string.Empty;
 
-       
-        public string Tipo { get; set; }
+        [Required]
+        public string Tipo { get; set; } = string.Empty;
 
+        [Required]
         public decimal PrecioPorHora { get; set; }
 
-      
-        public string GeneroMusical { get; set; }
+        [Required]
+        public string GeneroMusical { get; set; } = string.Empty;
 
-        
-        public string EquipoIncluido { get; set; }
+        [Required]
+        public string EquipoIncluido { get; set; } = string.Empty;
 
-    
-        public bool Disponible { get; set; }
-
-        // Propiedad de navegación para eventos 
-        //public virtual ICollection<Evento> Eventos { get; set; }
+        public bool Disponible { get; set; } = true;
     }
 }

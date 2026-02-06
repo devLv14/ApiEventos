@@ -12,23 +12,23 @@ namespace ApiEventos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AnimacionsController : ControllerBase
+    public class AnimacionesController : ControllerBase
     {
         private readonly ManteleriaDbContext _context;
 
-        public AnimacionsController(ManteleriaDbContext context)
+        public AnimacionesController(ManteleriaDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Animacions
+        // GET: api/Animaciones
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Animacion>>> GetAnimaciones()
         {
             return await _context.Animaciones.ToListAsync();
         }
 
-        // GET: api/Animacions/5
+        // GET: api/Animaciones/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Animacion>> GetAnimacion(int id)
         {
@@ -42,8 +42,7 @@ namespace ApiEventos.Controllers
             return animacion;
         }
 
-        // PUT: api/Animacions/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Animaciones/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAnimacion(int id, Animacion animacion)
         {
@@ -73,8 +72,7 @@ namespace ApiEventos.Controllers
             return NoContent();
         }
 
-        // POST: api/Animacions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Animaciones
         [HttpPost]
         public async Task<ActionResult<Animacion>> PostAnimacion(Animacion animacion)
         {
@@ -84,7 +82,7 @@ namespace ApiEventos.Controllers
             return CreatedAtAction("GetAnimacion", new { id = animacion.Id }, animacion);
         }
 
-        // DELETE: api/Animacions/5
+        // DELETE: api/Animaciones/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAnimacion(int id)
         {
@@ -98,6 +96,25 @@ namespace ApiEventos.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Animaciones/search?term=magia
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Animacion>>> SearchAnimaciones([FromQuery] string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return await _context.Animaciones.ToListAsync();
+            }
+
+            var animaciones = await _context.Animaciones
+                .Where(a => a.Nombre.Contains(term) ||
+                           a.Descripcion.Contains(term) ||
+                           a.Tipo.Contains(term) ||
+                           a.PublicoObjetivo.Contains(term))
+                .ToListAsync();
+
+            return animaciones;
         }
 
         private bool AnimacionExists(int id)

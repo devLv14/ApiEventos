@@ -12,23 +12,23 @@ namespace ApiEventos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DecoracionsController : ControllerBase
+    public class DecoracionesController : ControllerBase
     {
         private readonly ManteleriaDbContext _context;
 
-        public DecoracionsController(ManteleriaDbContext context)
+        public DecoracionesController(ManteleriaDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Decoracions
+        // GET: api/Decoraciones
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Decoracion>>> GetDecoraciones()
         {
             return await _context.Decoraciones.ToListAsync();
         }
 
-        // GET: api/Decoracions/5
+        // GET: api/Decoraciones/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Decoracion>> GetDecoracion(int id)
         {
@@ -42,8 +42,7 @@ namespace ApiEventos.Controllers
             return decoracion;
         }
 
-        // PUT: api/Decoracions/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Decoraciones/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDecoracion(int id, Decoracion decoracion)
         {
@@ -73,8 +72,7 @@ namespace ApiEventos.Controllers
             return NoContent();
         }
 
-        // POST: api/Decoracions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Decoraciones
         [HttpPost]
         public async Task<ActionResult<Decoracion>> PostDecoracion(Decoracion decoracion)
         {
@@ -84,7 +82,7 @@ namespace ApiEventos.Controllers
             return CreatedAtAction("GetDecoracion", new { id = decoracion.Id }, decoracion);
         }
 
-        // DELETE: api/Decoracions/5
+        // DELETE: api/Decoraciones/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDecoracion(int id)
         {
@@ -98,6 +96,25 @@ namespace ApiEventos.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Decoraciones/search?term=clasica
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Decoracion>>> SearchDecoraciones([FromQuery] string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return await _context.Decoraciones.ToListAsync();
+            }
+
+            var decoraciones = await _context.Decoraciones
+                .Where(d => d.Nombre.Contains(term) ||
+                           d.Descripcion.Contains(term) ||
+                           d.Tipo.Contains(term) ||
+                           d.EmpresaProveedor.Contains(term))
+                .ToListAsync();
+
+            return decoraciones;
         }
 
         private bool DecoracionExists(int id)

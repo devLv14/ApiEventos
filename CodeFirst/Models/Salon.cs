@@ -11,34 +11,25 @@ namespace CodeFirst.Models
     {
         public int? Id { get; set; }
 
-     
-        public string Nombre { get; set; }
+        [Required]
+        public string Nombre { get; set; } = string.Empty;
 
-       
         public string? Descripcion { get; set; }
 
-       
+        [Required]
         public int Capacidad { get; set; }
 
-    
+        [Required]
         public decimal PrecioHora { get; set; }
 
-       
-        public string Ubicacion { get; set; }
+        [Required]
+        public string Ubicacion { get; set; } = string.Empty;
 
-     
-        public string TipoEvento { get; set; }
+        [Required]
+        public string TipoEvento { get; set; } = string.Empty;
 
         public string? ServiciosIncluidos { get; set; }
 
-       
-        public string Disponible { get; set; } // 'Sí' o 'No'
-
-        // Propiedad de navegación para eventos 
-        //public virtual ICollection<Evento> Eventos { get; set; }
-
-        // Método para convertir a booleano si lo necesitas
-       
-        public bool EstaDisponible => Disponible.Equals("Sí", StringComparison.OrdinalIgnoreCase);
+        public bool Disponible { get; set; } = true;
     }
 }
